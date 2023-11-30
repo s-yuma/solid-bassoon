@@ -93,7 +93,7 @@ test('todo test', async ({ page }) => {
   await expect(page.locator('li')).toHaveText('test1')
 })
 
-エラー
+エラ
 
 Playwrightのrouteとmsw（Mock Service Worker）は、どちらもネットワークリクエストをモック化するためのツールですが、それぞれに特性と利点があります。
 
