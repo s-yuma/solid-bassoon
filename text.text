@@ -1,0 +1,115 @@
+pages/api/todo.js:
+import { NextApiRequest, NextApiResponse } from 'next'
+import mysql from 'mysql'
+
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'user',
+  password: 'password',
+  database: 'todo'
+})
+
+export default function handler(req, NextApiRequest, res, NextApiResponse) {
+  if (req.method === 'POST') {
+    const { id, title } = req.body
+    connection.query('INSERT INTO todos VALUES (?, ?)', [id, title], function (error, results, fields) {
+      if (error) throw error
+      res.status(200).json({ id, title })
+    })
+  } else if (req.method === 'GET') {
+    connection.query('SELECT * FROM todos', function (error, results, fields) {
+      if (error) throw error
+      res.status(200).json(results)
+    })
+  } else {
+    res.status(405).end()
+  }
+}
+
+
+
+pages/index.js:
+import { useState } from 'react'
+import axios from 'axios'
+
+export default function Home() {
+  const [id, setId] = useState('')
+  const [title, setTitle] = useState('')
+  const [todos, setTodos] = useState([])
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const res = await axios.post('/api/todo', { id, title })
+    setTodos([...todos, res.data])
+    setId('')
+    setTitle('')
+  }
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input value={id} onChange={(e) => setId(e.target.value)} placeholder="ID" />
+        <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
+        <button type="submit">Submit</button>
+      </form>
+      <ul>
+        {todos.map((todo) => (
+          <li key={todo.id}>{todo.title}</li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+
+import { test, expect } from '@playwright/test'
+
+test('todo test', async ({ page }) => {
+  await page.route('http://localhost:3000/api/todo', async (route) => {
+    const method = route.request().method()
+    if ('POST' === method) {
+      const postData = JSON.parse(route.request().postData())
+      await route.fulfill({
+        status: 200,
+        body: JSON.stringify(postData),
+      })
+    } else if ('GET' === method) {
+      await route.fulfill({
+        status: 200,
+        body: JSON.stringify([
+          { id: '1', title: 'test1' },
+          { id: '2', title: 'test2' },
+        ]),
+      })
+    }
+  })
+
+  await page.goto('http://localhost:3000')
+
+  await page.fill('input[placeholder="ID"]', '1')
+  await page.fill('input[placeholder="Title"]', 'test1')
+  await page.click('button[type="submit"]')
+
+  await expect(page.locator('li')).toHaveText('test1')
+})
+
+エラー
+
+Playwrightのrouteとmsw（Mock Service Worker）は、どちらもネットワークリクエストをモック化するためのツールですが、それぞれに特性と利点があります。
+
+Playwrightのrouteの特性:
+
+- Playwrightのrouteは、ブラウザレベルでのネットワークリクエストをインターセプトします。これにより、特定のURLへのリクエストをモック化したり、リダイレクトしたり、ブロックしたりすることができます。
+- Playwrightのrouteは、テスト環境でのみ動作します。つまり、開発中のアプリケーション自体に影響を与えることなく、テスト中にのみモックを適用できます。
+- Playwrightのrouteは、リクエストのメソッド（GET、POSTなど）やヘッダー、ボディなどを検査し、それに基づいてレスポンスを制御することができます。
+
+mswの特性:
+
+- mswは、Service Workerを使用してネットワークリクエストをインターセプトします。これにより、ブラウザだけでなく、Node.js環境でもネットワークリクエストをモック化することができます。
+- mswは、開発環境とテスト環境の両方で動作します。これにより、開発中のアプリケーションでリアルタイムにモックを確認しながら開発を進めることができます。
+- mswは、REST APIとGraphQL APIの両方をモック化することができます。また、リクエストとレスポンスのボディを操作することができます。
+
+まとめ:
+
+- Playwrightのrouteは、テスト環境でのみ動作し、ブラウザレベルでのネットワークリクエストをインターセプトします。これは、テスト中にのみモックを適用したい場合に便利です。
+- mswは、開発環境とテスト環境の両方で動作し、Service Workerを使用してネットワークリクエストをインターセプトします。これは、開発中にリアルタイムにモックを確認しながら開発を進めたい場合や、Node.js環境でネットワークリクエストをモック化したい場合に便利です。
