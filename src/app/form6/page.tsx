@@ -17,7 +17,7 @@ export default function App() {
     mode: "onSubmit",
   });
 
-  const nameValue = watch("name") || "";
+  const idValue = watch("id") || "";
   const passwordValue = watch("password") || "";
 
   // 9文字以下
@@ -35,7 +35,7 @@ export default function App() {
   // 記号
   const hasSymbol = /[!\"#$%&'()*+,-./:;<=>?@[\]^_`{}|~]/.test(passwordValue);
 
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = (data: any) => console.log(errors.password?.message);
 
   return (
     <form
@@ -43,11 +43,11 @@ export default function App() {
       className="flex flex-col gap-4 items-center mt-3"
     >
       <input
-        {...register("name")}
+        {...register("id")}
         placeholder="Name 必須"
         className=" border"
       />
-      {errors.name?.message && <p>{errors.name.message}</p>}
+      {errors.id?.message && <p>{errors.id.message}</p>}
       <input
         {...register("password")}
         placeholder="Password 必須"
@@ -161,26 +161,20 @@ export default function App() {
           </p>
         </div>
       </div>
-
-      <input {...register("email")} placeholder="Email" className=" border" />
-      {errors.email?.message && <p>{errors.email.message}</p>}
-      <input {...register("age")} placeholder="Age" className=" border" />
-      {errors.age?.message && <p>{errors.age.message}</p>}
-      <input {...register("birth")} placeholder="Birth" className=" border" />
-      {errors.birth?.message && <p>{errors.birth.message}</p>}
       <button
         type="submit"
         className=" border px-2 py-1 bg-sky-300"
-        disabled={nameValue.length === 0 || passwordValue.length === 0}
+        disabled={idValue.length === 0 || passwordValue.length === 0}
         style={{
           color:
-            nameValue.length === 0 || passwordValue.length === 0
+            idValue.length === 0 || passwordValue.length === 0
               ? "gray"
               : "black",
         }}
       >
         登録
       </button>
+      <div>{isValid ? "問題なし" : "問題あり"}</div>
     </form>
   );
 }
