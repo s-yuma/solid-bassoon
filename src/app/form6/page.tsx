@@ -48,7 +48,6 @@ export default function App() {
         className=" border"
       />
       {errors.name?.message && <p>{errors.name.message}</p>}
-
       <input
         {...register("password")}
         placeholder="Password 必須"
@@ -77,6 +76,7 @@ export default function App() {
           半角英字　小文字を含めてください
         </p>
       </div>
+      
       <div className="flex">
         <div>{`${!hasDigit ? `❌` : `✅`}`}</div>
         <p className={`${!hasDigit} && text-red-500`}>
@@ -89,10 +89,8 @@ export default function App() {
       </div>
       <input {...register("email")} placeholder="Email" className=" border" />
       {errors.email?.message && <p>{errors.email.message}</p>}
-
       <input {...register("age")} placeholder="Age" className=" border" />
       {errors.age?.message && <p>{errors.age.message}</p>}
-
       <input {...register("birth")} placeholder="Birth" className=" border" />
       {errors.birth?.message && <p>{errors.birth.message}</p>}
       <button
