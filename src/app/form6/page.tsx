@@ -54,39 +54,114 @@ export default function App() {
         className=" border"
       />
       {errors.password?.message && <p>{errors.password.message}</p>}
-      <div className="flex ">
-        <div>{`${!isPasswordLengthValid ? `❌` : `✅`}`}</div>
-        <p
-          className={`${
-            !isPasswordLengthValid ? `text-red-500` : `text-black`
-          }`}
-        >
-          9文字以上で入力してください
-        </p>
+
+      <div>
+        <div className="flex">
+          <div>
+            {passwordValue.length === 0
+              ? "○"
+              : isPasswordLengthValid && passwordValue.length > 0
+              ? "✅"
+              : "❌"}
+          </div>
+          <p
+            className={`${
+              passwordValue.length === 0
+                ? "text-black"
+                : isPasswordLengthValid && passwordValue.length > 0
+                ? "text-black"
+                : "text-red-500"
+            }`}
+          >
+            9文字以上で入力してください
+          </p>
+        </div>
+
+        <div className="flex">
+          <div>
+            {passwordValue.length === 0
+              ? "○"
+              : hasUppercaseLetter && passwordValue.length > 0
+              ? "✅"
+              : "❌"}
+          </div>
+          <p
+            className={`${
+              passwordValue.length === 0
+                ? "text-black"
+                : hasUppercaseLetter && passwordValue.length > 0
+                ? "text-black"
+                : "text-red-500"
+            }`}
+          >
+            半角英字　大文字を含めてください
+          </p>
+        </div>
+
+        <div className="flex">
+          <div>
+            {passwordValue.length === 0
+              ? "○"
+              : hasLowercaseLetter && passwordValue.length > 0
+              ? "✅"
+              : "❌"}
+          </div>
+          <p
+            className={`${
+              passwordValue.length === 0
+                ? "text-black"
+                : hasLowercaseLetter && passwordValue.length > 0
+                ? "text-black"
+                : "text-red-500"
+            }`}
+          >
+            半角英字　小文字を含めてください
+          </p>
+        </div>
+
+        <div className="flex">
+          <div>
+            {passwordValue.length === 0
+              ? "○"
+              : hasDigit && passwordValue.length > 0
+              ? "✅"
+              : "❌"}
+          </div>
+          <p
+            className={`${
+              passwordValue.length === 0
+                ? "text-black"
+                : hasDigit && passwordValue.length > 0
+                ? "text-black"
+                : "text-red-500"
+            }`}
+          >
+            半角数字を含めてください
+          </p>
+        </div>
+
+        <div className="flex">
+          <div>
+            {passwordValue.length === 0
+              ? "○"
+              : hasSymbol && passwordValue.length > 0
+              ? "✅"
+              : "❌"}
+          </div>
+          <p
+            className={`${
+              passwordValue.length === 0
+                ? "text-black"
+                : hasSymbol && passwordValue.length > 0
+                ? "text-black"
+                : "text-red-500"
+            }`}
+          >
+            記号を含めてください
+          </p>
+        </div>
       </div>
-      <div className="flex">
-        <div>{`${!hasUppercaseLetter ? `❌` : `✅`}`}</div>
-        <p className={`${!hasUppercaseLetter} && text-red-500`}>
-          半角英字　大文字を入れてください
-        </p>
-      </div>
-      <div className="flex">
-        <div>{`${!hasLowercaseLetter ? `❌` : `✅`}`}</div>
-        <p className={`${!hasLowercaseLetter} && text-red-500`}>
-          半角英字　小文字を含めてください
-        </p>
-      </div>
-      
-      <div className="flex">
-        <div>{`${!hasDigit ? `❌` : `✅`}`}</div>
-        <p className={`${!hasDigit} && text-red-500`}>
-          半角数字を含めてください。
-        </p>
-      </div>
-      <div className="flex">
-        <div>{`${!hasSymbol ? `❌` : `✅`}`}</div>
-        <p className={`${!hasSymbol} && text-red-500`}>記号を含めてください</p>
-      </div>
+
       <input {...register("email")} placeholder="Email" className=" border" />
       {errors.email?.message && <p>{errors.email.message}</p>}
       <input {...register("age")} placeholder="Age" className=" border" />
