@@ -8,11 +8,12 @@ const Page = () => {
   const searchParams = useSearchParams();
   const name = searchParams.get("name") as string;
 
-  const { data, error } = useFetchUser(name);
-  {
-    data && console.log(data);
-  }
+  const { data, error ,isValidating, isLoading} = useFetchUser(name);
 
+  
+if(data) {
+  console.log(data)
+}
   return (
     <div>
       {data && (
