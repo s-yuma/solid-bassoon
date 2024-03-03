@@ -9,6 +9,7 @@ export const schema = z.object({
     }),
   password: z
     .string()
+    .nonempty({message:"入力必須です"})
     .min(9, {message: " "})
     .max(31, {message: "パスワードは31文字以下で入力してください"})
     .regex(

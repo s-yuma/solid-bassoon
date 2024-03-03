@@ -53,7 +53,7 @@ export default function App() {
         placeholder="Password 必須"
         className=" border"
       />
-      {errors.password?.message && <p>{errors.password.message}</p>}
+      {(errors.password?.message === "入力必須です" || errors.password?.message === "パスワードは31文字以下で入力してください" ) &&  <p>{errors.password.message}</p>}
 
       <div>
         <div className="flex">
