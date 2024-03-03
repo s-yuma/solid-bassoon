@@ -35,6 +35,7 @@ export default function App() {
   // 記号
   const hasSymbol = /[!\"#$%&'()*+,-./:;<=>?@[\]^_`{}|~]/.test(passwordValue);
 
+  console.log(errors.password?.type)
   const onSubmit = (data: any) => console.log(errors.password?.message);
 
   return (
@@ -53,7 +54,7 @@ export default function App() {
         placeholder="Password 必須"
         className=" border"
       />
-      {(errors.password?.message === "入力必須です" || errors.password?.message === "パスワードは31文字以下で入力してください" ) &&  <p>{errors.password.message}</p>}
+      {(errors.password?.message === "入力必須です" || errors.password?.message === "パスワードは31文字以下で入力してください" ) &&  <p className=" text-red-500">{errors.password.message}</p>}
 
       <div>
         <div className="flex">
@@ -164,7 +165,7 @@ export default function App() {
       <button
         type="submit"
         className=" border px-2 py-1 bg-sky-300"
-        disabled={idValue.length === 0 || passwordValue.length === 0}
+        // disabled={idValue.length === 0 || passwordValue.length === 0}
         style={{
           color:
             idValue.length === 0 || passwordValue.length === 0
